@@ -104,14 +104,21 @@ export default function Home() {
         <div className="relative group">
           <input
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={(e) => {
+              const value = e.target.value;
+              // Limit to 200 characters
+              if (value.length <= 200) {
+                setInput(value);
+              }
+            }}
+            maxLength={200}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !loading && input.trim()) {
                 handleRoast(input);
               }
             }}
             placeholder="Type your pathetic resolution here..."
-            className="w-full bg-zinc-900 border-2 border-zinc-800 p-5 pr-16 rounded-2xl text-xl focus:outline-none focus:border-red-600 transition-all placeholder:text-zinc-700"
+            className="w-full bg-zinc-900 border-2 border-zinc-800 p-5 pr-20 pb-7 rounded-2xl text-xl focus:outline-none focus:border-red-600 transition-all placeholder:text-zinc-700"
           />
           <button 
             onClick={() => handleRoast(input)}
@@ -120,6 +127,10 @@ export default function Home() {
           >
             {loading ? <RefreshCcw className="animate-spin" size={20} /> : <Send size={20} />}
           </button>
+          {/* Character Counter */}
+          <div className="absolute bottom-2 right-16 text-xs text-zinc-500">
+            {input.length}/200
+          </div>
         </div>
 
         {/* Suggestions */}

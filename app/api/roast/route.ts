@@ -32,6 +32,46 @@ export async function POST(req: Request) {
     );
   }
 
+  // Security: Character length validation
+  if (resolution.length > 200) {
+    return NextResponse.json(
+      { error: "Resolution must be 200 characters or less" },
+      { status: 400 }
+    );
+  }
+
+  // Security: Basic sanitization - remove potentially dangerous characters
+  // Remove null bytes, control characters, and common injection patterns
+  const sanitized = resolution
+    .replace(/[\x00-\x1F\x7F]/g, '') // Remove control characters
+    .replace(/[<>]/g, '') // Remove angle brackets
+    .trim();
+
+  if (sanitized.length === 0) {
+    return NextResponse.json(
+      { error: "Invalid resolution text" },
+      { status: 400 }
+    );
+  }
+
+  // Additional check: prevent common injection patterns
+  // Only block SQL keywords and shell command patterns, not normal punctuation
+  const dangerousPatterns = [
+    /\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|EXECUTE|UNION|SCRIPT|JAVASCRIPT|ONLOAD|ONERROR|SH|BASH|CMD|POWERSHELL)\b/i,
+    /[;&|`$]/g, // Block semicolons, ampersands, pipes, backticks, and dollar signs (common in injections)
+    /(\/\*|\*\/|--\s)/, // SQL comment patterns
+    /<script|javascript:|onerror=|onload=/i, // XSS patterns
+  ];
+
+  for (const pattern of dangerousPatterns) {
+    if (pattern.test(sanitized)) {
+      return NextResponse.json(
+        { error: "Invalid characters detected in resolution" },
+        { status: 400 }
+      );
+    }
+  }
+
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",
@@ -39,7 +79,7 @@ export async function POST(req: Request) {
         { role: "system", content: SYSTEM_PROMPT },
         {
           role: "user",
-          content: `Critique this New Year resolution: "${resolution}"`,
+          content: `Critique this New Year resolution: "${sanitized}"`,
         },
       ],
       temperature: 0.9,
