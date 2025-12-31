@@ -56,7 +56,7 @@ export default function Home() {
             <span className="text-white font-bold text-sm md:text-base drop-shadow-lg">
               Jyotindra has created a blog explaining how he built this -{" "}
               <a
-                href="#"
+                href="https://medium.com/@techbrains21/i-fine-tuned-an-ai-to-roast-peoples-new-year-resolutions-in-hinglish-1c423bbc1301"
                 className="text-black hover:text-blue-100 underline transition-colors"
               >
                 Click here to read it !
@@ -65,7 +65,7 @@ export default function Home() {
             <span className="text-white font-bold text-sm md:text-base drop-shadow-lg">
               Jyotindra has created a blog explaining how he built this -{" "}
               <a
-                href="#"
+                href="https://medium.com/@techbrains21/i-fine-tuned-an-ai-to-roast-peoples-new-year-resolutions-in-hinglish-1c423bbc1301"
                 className="text-black hover:text-blue-100 underline transition-colors"
               >
                 Click here to read it !
@@ -74,7 +74,7 @@ export default function Home() {
             <span className="text-white font-bold text-sm md:text-base drop-shadow-lg">
               Jyotindra has created a blog explaining how he built this -{" "}
               <a
-                href="#"
+                href="https://medium.com/@techbrains21/i-fine-tuned-an-ai-to-roast-peoples-new-year-resolutions-in-hinglish-1c423bbc1301"
                 className="text-black hover:text-yellow-100 underline transition-colors"
               >
                 Click here to read it !
